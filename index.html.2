@@ -1,0 +1,64 @@
+2026-10-28T01:49:35.294Z	Initializing build environment...
+2026-10-28T01:49:37.536Z	Success: Finished initializing build environment
+2026-10-28T01:49:39.018Z	Cloning seed repository...
+2026-10-28T01:49:39.025Z	Cloning from: https://github.com/cloudflare/templates.git
+2026-10-28T01:49:40.894Z	Overwriting files
+2026-10-28T01:49:41.585Z	Pushing to destination: https://github.com/uchihag765-dev/hinata-chat-73.git
+2026-10-28T01:49:43.595Z	Detected the following tools from environment: npm@10.9.2, nodejs@24.22.1, bun@1.4.4
+2026-10-28T01:49:43.596Z	Installing project dependencies: bun install --frozen-lockfile
+2026-10-28T01:49:44.304Z	bun install v1.4.4 (38afee6c8)
+2026-10-28T01:49:44.308Z	[3.12ms] migrated lockfile from package-lock.json
+2026-10-28T01:49:47.667Z	
+2026-10-28T01:49:47.668Z	+ @cloudflare/vitest-pool-workers@0.21.3
+2026-10-28T01:49:47.668Z	+ @cloudflare/workers-types@4.20260702.1
+2026-10-28T01:49:47.668Z	+ @types/node@24.10.1
+2026-10-28T01:49:47.668Z	+ @vitest/runner@4.1.10
+2026-10-28T01:49:47.668Z	+ @vitest/snapshot@4.1.10
+2026-10-28T01:49:47.668Z	+ typescript@5.9.3
+2026-10-28T01:49:47.668Z	+ vitest@4.1.10
+2026-10-28T01:49:47.668Z	+ wrangler@4.136.1
+2026-10-28T01:49:47.668Z	
+2026-10-28T01:49:47.668Z	97 packages installed [3.48s]
+2026-10-28T01:49:48.069Z	Executing user deploy command: npm run deploy
+2026-10-28T01:49:50.700Z	
+2026-10-28T01:49:50.703Z	> deploy
+2026-10-28T01:49:50.703Z	> wrangler deploy
+2026-10-28T01:49:50.703Z	
+2026-10-28T01:49:51.856Z	
+2026-10-28T01:49:51.856Z	 ⛅️ wrangler 4.136.1
+2026-10-28T01:49:51.856Z	────────────────────
+2026-10-28T01:49:55.010Z	🌀 Building list of assets...
+2026-10-28T01:49:55.011Z	✨ Read 2 files from the assets directory /opt/buildhome/repo/public
+2026-10-28T01:49:55.016Z	🌀 Starting asset upload...
+2026-10-28T01:49:57.063Z	🌀 Found 2 new or modified static assets to upload. Proceeding with upload...
+2026-10-28T01:49:57.063Z	+ /index.html
+2026-10-28T01:49:57.063Z	+ /chat.js
+2026-10-28T01:49:58.336Z	Uploaded 1 of 2 assets
+2026-10-28T01:49:58.359Z	Uploaded 2 of 2 assets
+2026-10-28T01:49:58.359Z	✨ Success! Uploaded 2 files (1.30 sec)
+2026-10-28T01:49:58.360Z	
+2026-10-28T01:49:58.369Z	Total Upload: 20.55 KiB / gzip: 5.52 KiB
+2026-10-28T01:50:03.313Z	Worker Startup Time: 11 ms
+2026-10-28T01:50:03.314Z	Your Worker has access to the following bindings:
+2026-10-28T01:50:03.314Z	Binding            Resource      
+2026-10-28T01:50:03.314Z	env.AI             AI            
+2026-10-28T01:50:03.314Z	env.ASSETS         Assets        
+2026-10-28T01:50:03.314Z	
+2026-10-28T01:50:03.314Z	Uploaded hinata-chat-73 (8.98 sec)
+2026-10-28T01:50:05.336Z	▲ [WARNING] Because 'workers_dev' is not in your Wrangler file, it will be enabled for this deployment by default.
+2026-10-28T01:50:05.336Z	
+2026-10-28T01:50:05.337Z	  To override this setting, you can disable workers.dev by explicitly setting 'workers_dev = false' in your Wrangler file.
+2026-10-28T01:50:05.337Z	
+2026-10-28T01:50:05.337Z	
+2026-10-28T01:50:05.338Z	▲ [WARNING] Because your 'workers.dev' route is enabled and your 'preview_urls' setting is not in your Wrangler file, Preview URLs will be enabled for this deployment by default.
+2026-10-28T01:50:05.338Z	
+2026-10-28T01:50:05.338Z	  To override this setting, you can disable Preview URLs by explicitly setting 'preview_urls = false' in your Wrangler file.
+2026-10-28T01:50:05.338Z	
+2026-10-28T01:50:05.338Z	
+2026-10-28T01:50:05.339Z	Deployed hinata-chat-73 triggers (2.02 sec)
+2026-10-28T01:50:05.339Z	  https://hinata-chat-73.uchihag765.workers.dev
+2026-10-28T01:50:05.339Z	Current Version ID: 7274a78a-aa7a-4f24-ad91-ff20c6faa58a
+2026-10-28T01:50:05.342Z	
+2026-10-28T01:50:05.342Z	Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
+2026-10-28T01:50:05.413Z	Success: Deploy command completed
+2026-10-28T01:50:05.781Z	✨ Success! Build completed.
