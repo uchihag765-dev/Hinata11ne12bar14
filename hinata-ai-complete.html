@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hinata Namikaze 💜 AI Chat</title>
+<style>
+:root{--purple:#8154ad;--pale:#f2e8ff;--ink:#30213c}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#f8f1ff,#e8dcf8);color:var(--ink)}
+header{padding:18px 15px;background:linear-gradient(135deg,#65418c,#a879ce);color:#fff;display:flex;align-items:center;gap:13px}
+.avatar{width:62px;height:62px;border-radius:50%;background:#fff3ff;display:grid;place-items:center;font-size:34px;border:2px solid #ead7ff;flex-shrink:0}
+h1{font-size:20px;margin:0 0 5px} header p{margin:0;font-size:12px;opacity:.9}
+main{max-width:760px;margin:18px auto;padding:0 12px}
+.card{background:white;border-radius:16px;padding:15px;margin-bottom:13px;box-shadow:0 4px 18px #4d286b12}
+h2{font-size:17px;margin:0 0 8px;color:#7046a0}
+p{line-height:1.55}
+#messages{height:48vh;min-height:280px;max-height:520px;overflow-y:auto;padding:8px;background:#fdfaff;border-radius:12px;margin:12px 0}
+.msg{padding:11px 13px;margin:8px 0;border-radius:14px;max-width:90%;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.45}
+.user{background:#e8dcf8;margin-left:auto}
+.bot{background:#f2edf8;margin-right:auto}
+form{display:flex;gap:8px}
+input{min-width:0;flex:1;padding:13px;border:1px solid #d3c0e4;border-radius:12px;font-size:16px}
+button{border:0;border-radius:12px;background:var(--purple);color:white;font-weight:bold;padding:0 17px;font-size:15px}
+.small{font-size:12px;color:#786b83;text-align:center}
+</style>
+</head>
+<body>
+<header>
+  <div class="avatar" aria-label="Hinata-themed avatar">🌸</div>
+  <div><h1>Hinata Namikaze 💜</h1><p>Anime AI Chat • বাংলা / Banglish / English</p></div>
+</header>
+<main>
+  <section class="card">
+    <h2>হাই! 🌸</h2>
+    <p style="margin:0">এখানে কথা বলো। কিছু নির্দিষ্ট নামের জন্য বিশেষ উত্তর সবসময় কাজ করবে, এমনকি অনলাইন AI উত্তর না দিলেও।</p>
+  </section>
+  <section class="card">
+    <h2>💬 Chat</h2>
+    <div id="messages" aria-live="polite">
+      <div class="msg bot">হাই! 💜 আমি Hinata Chat। কী নিয়ে কথা বলতে চাও?</div>
+    </div>
+    <form id="form">
+      <input id="input" placeholder="এখানে মেসেজ লেখো..." autocomplete="off" required>
+      <button type="submit">Send</button>
+    </form>
+    <p class="small">বিশেষ উত্তর আগে পরীক্ষা করা হবে; অন্য প্রশ্ন Cloudflare AI-তে পাঠানো হবে।</p>
+  </section>
+  <p class="small">Fan-made anime chat • Made with 💜</p>
+</main>
+<script>
+const WORKER_URL = "https://hinata-chat-73.uchihag765.workers.dev/";
+const messages = document.getElementById("messages");
+const input = document.getElementById("input");
+const form = document.getElementById("form");
+
+function addMessage(text, who) {
+  const div = document.createElement("div");
+  div.className = "msg " + who;
+  div.textContent = text;
+  messages.appendChild(div);
+  messages.scrollTop = messages.scrollHeight;
+}
+function specialReply(text) {
+  // Case-insensitive and works when the ID is surrounded by other-language text.
+  const normalized = text.normalize("NFKC").toLowerCase();
+  if (normalized.includes("naimtt94")) {
+    return "হ্যাঁ, সে আমার জামাইয়ের বাবা। 💜";
+  }
+  if (normalized.includes("ntegaming4")) {
+    return "হ্যাঁ, সে আমার ছোট বোন। 🌸";
+  }
+  return null;
+}
+async function askAI(text) {
+  // Common Workers AI chat-template endpoint. If the worker uses another API,
+  // the special replies above still work independently.
+  const response = await fetch(WORKER_URL.replace(/\/+$/, "") + "/api/chat", {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({messages:[{role:"user", content:text}]})
+  });
+  if (!response.ok) throw new Error("AI server error (" + response.status + ")");
+  const data = await response.json();
+  if (typeof data === "string") return data;
+  return data.response || data.reply || data.output || data.message ||
+         data.result || data.text ||
+         (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) ||
+         "AI থেকে উত্তর পাওয়া যায়নি।";
+}
+form.addEventListener("submit", async function(e) {
+  e.preventDefault();
+  const text = input.value.trim();
+  if (!text) return;
+  addMessage(text, "user");
+  input.value = "";
+  input.focus();
+
+  // These rules run locally first, so they do not depend on the AI service.
+  const fixed = specialReply(text);
+  if (fixed) {
+    addMessage(fixed, "bot");
+    return;
+  }
+
+  const waiting = document.createElement("div");
+  waiting.className = "msg bot";
+  waiting.textContent = "Hinata ভাবছে... 🌸";
+  messages.appendChild(waiting);
+  messages.scrollTop = messages.scrollHeight;
+  try {
+    const answer = await askAI(text);
+    waiting.textContent = typeof answer === "string" ? answer : JSON.stringify(answer);
+  } catch (err) {
+    waiting.textContent = "AI এখন উত্তর দিতে পারছে না। তবে naimtt94 ও ntegaming4-এর বিশেষ উত্তর ঠিকই কাজ করবে।";
+  }
+});
+</script>
+</body>
+</html>
