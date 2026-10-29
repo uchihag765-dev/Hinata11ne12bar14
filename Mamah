@@ -1,0 +1,49 @@
+
+<script>
+(function () {
+  function checkSpecialNames() {
+    const input = document.querySelector(
+      'textarea, input:not([type="hidden"]):not([type="submit"])'
+    );
+    if (!input) return;
+
+    const form = input.closest('form');
+    if (!form || form.dataset.specialNamesReady) return;
+    form.dataset.specialNamesReady = '1';
+
+    form.addEventListener('submit', function (event) {
+      const message = input.value.toLowerCase();
+      let reply = '';
+
+      if (message.includes('naimtt94') &&
+          message.includes('ntegaming4')) {
+        reply = 'হ্যাঁ! naimtt94 আমার জামাইয়ের বাবা 😂💜 আর ntegaming4 আমার ছোট বোন! 🌸';
+      } else if (message.includes('naimtt94')) {
+        reply = 'হ্যাঁ, সে আমার জামাইয়ের বাবা! 😂💜';
+      } else if (message.includes('ntegaming4')) {
+        reply = 'হ্যাঁ, সে আমার ছোট বোন! 💜🌸';
+      }
+
+      if (!reply) return;
+
+      event.preventDefault();
+      event.stopImmediatePropagation();
+
+      let box = document.getElementById('special-name-reply');
+      if (!box) {
+        box = document.createElement('div');
+        box.id = 'special-name-reply';
+        box.style.cssText =
+          'margin:12px;padding:14px;border-radius:12px;background:#f3e8ff;color:#442266;font-size:16px;';
+        form.insertAdjacentElement('afterend', box);
+      }
+
+      box.textContent = reply;
+      input.value = '';
+    , true);
+  }
+
+  checkSpecialNames();
+  setInterval(checkSpecialNames, 1000);
+})();
+</script>
